@@ -7,8 +7,8 @@
 
 #pragma once
 
-#include "Interface/HeeksColor.h"
-#include "Interface/HeeksObj.h"
+#include "interface/HeeksColor.h"
+#include "interface/HeeksObj.h"
 #include "HeeksArtTypes.h"
 #include "MeshVertex.h"
 #include "MeshEdge.h"
