@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include "interface\HeeksObj.h"
+#include "interface/HeeksObj.h"
 #include "HeeksArtTypes.h"
 
 class CMeshChild : public HeeksObj  

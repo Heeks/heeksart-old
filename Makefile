@@ -1,105 +1,89 @@
-#CCFLAGS=-Wall -fPIC -g -I "./" -I/home/dan/Desktop/wxGTK-2.8.9/buildgtk/lib/wx/include/gtk2-ansi-debug-2.8 -I/usr/include/wx-2.8 -D__WXGTK__ -DHEEKSCNC -D__WXDEBUG__ -DWXUSINGDLL
-CCFLAGS=-Wall -fPIC -g -I "./" -I/usr/lib/wx/include/gtk2-unicode-release-2.8 -I/usr/include/wx-2.8 -D__WXGTK__ -DHEEKSCNC -DUNICODE -DWXUSINGDLL -DTIXML_USE_STL
+#CCFLAGS=-Wall -fPIC -g -I "./" -I/home/dan/Desktop/wxGTK-2.8.9/buildgtk/lib/wx/include/gtk2-ansi-debug-2.8 -I/usr/include/wx-2.8 -I$(HEEKSCADPATH) -D__WXGTK__ -DHEEKSART -D__WXDEBUG__ -DWXUSINGDLL
+CCFLAGS=-Wall -fPIC -g -I "./" -I/usr/lib/wx/include/gtk2-unicode-release-2.8 -I/usr/include/wx-2.8 -I$(HEEKSCADPATH) -D__WXGTK__ -DHEEKSART -DUNICODE -DWXUSINGDLL -DTIXML_USE_STL
 
 #WX_LIB_LETTER=d
 WX_LIB_LETTER=u
 
-#OBJECTS=HeeksCNC.o HeeksColor.o HeeksObj.o Interface.o NCCode.o ObjList.o OutputCanvas.o Profile.o Pocket.o Program.o ProgramCanvas.o PropertyCheck.o PropertyChoice.o PropertyColor.o PropertyDouble.o PropertyInt.o PropertyList.o PropertyString.o PropertyVertex.o PythonStuff.o strconv.o LeftAndRight.o MarkedObject.o ToolImage.o tinyxml.o tinystr.o tinyxmlerror.o tinyxmlparser.o ZigZag.o
-OBJECTS=HeeksCNC.o HeeksColor.o HeeksObj.o Interface.o NCCode.o ObjList.o OutputCanvas.o Profile.o Pocket.o Program.o ProgramCanvas.o PropertyCheck.o PropertyChoice.o PropertyColor.o PropertyDouble.o PropertyInt.o PropertyList.o PropertyString.o PropertyVertex.o PythonStuff.o strconv.o LeftAndRight.o MarkedObject.o ToolImage.o tinyxml.o tinyxmlerror.o tinyxmlparser.o ZigZag.o Adaptive.o
+OBJECTS=HeeksArt.o HeeksColor.o HeeksObj.o Interface.o Matrix.o Mesh.o MeshChild.o MeshEdge.o MeshFace.o MeshPosition.o MeshVertex.o ObjList.o Plane.o PropertyCheck.o PropertyChoice.o PropertyColor.o PropertyDouble.o PropertyInt.o PropertyList.o PropertyString.o PropertyVertex.o tinyxml.o tinyxmlerror.o tinyxmlparser.o ToolImage.o
 
-SHARED_LIBRARY=../libheekscnc.so.0.5.1
+SHARED_LIBRARY=./libheeksart.so.0.1.0
 
 ${SHARED_LIBRARY}: ${OBJECTS}
-	gcc -shared -fPIC -Wl,-soname,libheekscnc.so.0 -o ${SHARED_LIBRARY} ${OBJECTS} -lstdc++ -lGLU -lGL -lwx_gtk2${WX_LIB_LETTER}_richtext-2.8 -lwx_gtk2${WX_LIB_LETTER}_aui-2.8 -lwx_gtk2${WX_LIB_LETTER}_xrc-2.8 -lwx_gtk2${WX_LIB_LETTER}_qa-2.8 -lwx_gtk2${WX_LIB_LETTER}_html-2.8 -lwx_gtk2${WX_LIB_LETTER}_adv-2.8 -lwx_gtk2${WX_LIB_LETTER}_core-2.8 -lwx_base${WX_LIB_LETTER}_xml-2.8 -lwx_base${WX_LIB_LETTER}_net-2.8 -lwx_base${WX_LIB_LETTER}-2.8 -lwx_gtk2${WX_LIB_LETTER}_gl-2.8
+	gcc -shared -fPIC -Wl,-soname,libheeksart.so.0 -o ${SHARED_LIBRARY} ${OBJECTS} -lstdc++ -lGLU -lGL -lwx_gtk2${WX_LIB_LETTER}_richtext-2.8 -lwx_gtk2${WX_LIB_LETTER}_aui-2.8 -lwx_gtk2${WX_LIB_LETTER}_xrc-2.8 -lwx_gtk2${WX_LIB_LETTER}_qa-2.8 -lwx_gtk2${WX_LIB_LETTER}_html-2.8 -lwx_gtk2${WX_LIB_LETTER}_adv-2.8 -lwx_gtk2${WX_LIB_LETTER}_core-2.8 -lwx_base${WX_LIB_LETTER}_xml-2.8 -lwx_base${WX_LIB_LETTER}_net-2.8 -lwx_base${WX_LIB_LETTER}-2.8 -lwx_gtk2${WX_LIB_LETTER}_gl-2.8
 
-HeeksCNC.o: HeeksCNC.cpp
+HeeksArt.o: HeeksArt.cpp
 	gcc -c $? ${CCFLAGS} -o $@
 
-HeeksColor.o: ../../interface/HeeksColor.cpp
+HeeksColor.o: $(HEEKSCADPATH)/interface/HeeksColor.cpp
 	gcc -c $? ${CCFLAGS} -o $@
 
-HeeksObj.o: ../../interface/HeeksObj.cpp
+HeeksObj.o: $(HEEKSCADPATH)/interface/HeeksObj.cpp
 	gcc -c $? ${CCFLAGS} -o $@
 
 Interface.o: Interface.cpp
 	gcc -c $? ${CCFLAGS} -o $@
 
-LeftAndRight.o: ../../interface/LeftAndRight.cpp
+Matrix.o: Matrix.cpp
 	gcc -c $? ${CCFLAGS} -o $@
 
-MarkedObject.o: ../../interface/MarkedObject.cpp
+Mesh.o: Mesh.cpp
 	gcc -c $? ${CCFLAGS} -o $@
 
-NCCode.o: NCCode.cpp
+MeshChild.o: MeshChild.cpp
 	gcc -c $? ${CCFLAGS} -o $@
 
-ObjList.o: ../../interface/ObjList.cpp
+MeshEdge.o: MeshEdge.cpp
 	gcc -c $? ${CCFLAGS} -o $@
 
-OutputCanvas.o: OutputCanvas.cpp
+MeshFace.o: MeshFace.cpp
 	gcc -c $? ${CCFLAGS} -o $@
 
-Profile.o: Profile.cpp
+MeshPosition.o: MeshPosition.cpp
 	gcc -c $? ${CCFLAGS} -o $@
 
-Pocket.o: Pocket.cpp
+MeshVertex.o: MeshVertex.cpp
 	gcc -c $? ${CCFLAGS} -o $@
 
-Program.o: Program.cpp
+ObjList.o: $(HEEKSCADPATH)/interface/ObjList.cpp
 	gcc -c $? ${CCFLAGS} -o $@
 
-ProgramCanvas.o: ProgramCanvas.cpp
+Plane.o: Plane.cpp
 	gcc -c $? ${CCFLAGS} -o $@
 
-PropertyCheck.o: ../../interface/PropertyCheck.cpp
+PropertyCheck.o: $(HEEKSCADPATH)/interface/PropertyCheck.cpp
 	gcc -c $? ${CCFLAGS} -o $@
 
-PropertyChoice.o: ../../interface/PropertyChoice.cpp
+PropertyChoice.o: $(HEEKSCADPATH)/interface/PropertyChoice.cpp
 	gcc -c $? ${CCFLAGS} -o $@
 
-PropertyColor.o: ../../interface/PropertyColor.cpp
+PropertyColor.o: $(HEEKSCADPATH)/interface/PropertyColor.cpp
 	gcc -c $? ${CCFLAGS} -o $@
 
-PropertyDouble.o: ../../interface/PropertyDouble.cpp
+PropertyDouble.o: $(HEEKSCADPATH)/interface/PropertyDouble.cpp
 	gcc -c $? ${CCFLAGS} -o $@
 
-PropertyInt.o: ../../interface/PropertyInt.cpp
+PropertyInt.o: $(HEEKSCADPATH)/interface/PropertyInt.cpp
 	gcc -c $? ${CCFLAGS} -o $@
 
-PropertyList.o: ../../interface/PropertyList.cpp
+PropertyList.o: $(HEEKSCADPATH)/interface/PropertyList.cpp
 	gcc -c $? ${CCFLAGS} -o $@
 
-PropertyString.o: ../../interface/PropertyString.cpp
+PropertyString.o: $(HEEKSCADPATH)/interface/PropertyString.cpp
 	gcc -c $? ${CCFLAGS} -o $@
 
-PropertyVertex.o: ../../interface/PropertyVertex.cpp
+PropertyVertex.o: $(HEEKSCADPATH)/interface/PropertyVertex.cpp
 	gcc -c $? ${CCFLAGS} -o $@
 
-PythonStuff.o: PythonStuff.cpp
+tinyxml.o: $(HEEKSCADPATH)/tinyxml/tinyxml.cpp
 	gcc -c $? ${CCFLAGS} -o $@
 
-strconv.o: ../../interface/strconv.cpp
+tinyxmlerror.o: $(HEEKSCADPATH)/tinyxml/tinyxmlerror.cpp
 	gcc -c $? ${CCFLAGS} -o $@
 
-ToolImage.o: ../../interface/ToolImage.cpp
+tinyxmlparser.o: $(HEEKSCADPATH)/tinyxml/tinyxmlparser.cpp
 	gcc -c $? ${CCFLAGS} -o $@
 
-tinyxml.o: ../../tinyxml/tinyxml.cpp
-	gcc -c $? ${CCFLAGS} -o $@
-
-#tinystr.o: ../../tinyxml/tinystr.cpp
-#	gcc -c $? ${CCFLAGS} -o $@
-
-tinyxmlerror.o: ../../tinyxml/tinyxmlerror.cpp
-	gcc -c $? ${CCFLAGS} -o $@
-
-tinyxmlparser.o: ../../tinyxml/tinyxmlparser.cpp
-	gcc -c $? ${CCFLAGS} -o $@
-
-ZigZag.o: ZigZag.cpp
-	gcc -c $? ${CCFLAGS} -o $@
-
-Adaptive.o: Adaptive.cpp
+ToolImage.o: $(HEEKSCADPATH)/interface/ToolImage.cpp
 	gcc -c $? ${CCFLAGS} -o $@
 
 clean:

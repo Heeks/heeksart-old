@@ -208,11 +208,7 @@ void CMeshFace::MakeSureDisplayListExists(){
 
 	glNewList(m_gl_list, GL_COMPILE);
 	
-	CMesh* mesh = (CMesh*)(m_owner);
-
-#if !defined AVERAGE_NORMAL
 	glShadeModel(GL_SMOOTH);
-#endif
 
 	glBegin(GL_TRIANGLES);
 	GetSmoothTriangles(render_triangle_vertices2);
@@ -304,22 +300,6 @@ Point CMeshFace::direction_at_vertex(const CMeshVertex* v)const{
 	if(i<2)return Point(0, 0 ,0);
 
 	return (vc[0] + vc[1]).norm();
-}
-
-static Point get_direction_given_av_norm_and_vector(const Point& avn, const Point& sv){
-	Point cp = avn ^ sv;
-	Point cp2 = cp ^ avn;
-
-	double dp = cp2 * sv;
-	if(dp<0)cp2 = -cp2;
-	return cp2.norm();
-}
-
-static Point get_direction_given_av_norm_and_end_points(const Point& avn, const Point& p1, const Point& p2){
-	Point sv(p1, p2);
-
-	return get_direction_given_av_norm_and_vector(avn, sv);
-
 }
 
 bool CMeshFace::Stretch(const double *p, const double* shift){

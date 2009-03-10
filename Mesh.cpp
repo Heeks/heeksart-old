@@ -391,7 +391,7 @@ CMeshEdge* CMesh::AddEdge(CMeshVertex* v1, CMeshVertex* v2, const CMeshPosition&
 		if(second_face)*second_face = true;
 	}
 	else{
-		wxMessageBox("Edge cannot have more than 2 faces!");
+		wxMessageBox(_("Edge cannot have more than 2 faces!"));
 	}
 
 	return edge;
@@ -433,7 +433,7 @@ public:
 	const wxChar* GetTitle(){return _("Set All Vertex Normals");}
 	void Run(){
 		if(!mesh_for_tools->SetAllVertexNormals()){
-			wxMessageBox("At least one vertex could not be normalized!");
+			wxMessageBox(_("At least one vertex could not be normalized!"));
 		}
 	}
 };
@@ -629,7 +629,7 @@ static void add_triangle_to_object(const Point& vt0, const Point& vt1, const Poi
 	if(object_to_add_triangles_to == NULL)return;
 
 	// make a triangle
-	float t[3][3] = {vt0.x, vt0.y, vt0.z, vt1.x, vt1.y, vt1.z, vt2.x, vt2.y, vt2.z};
+	float t[3][3] = {{vt0.x, vt0.y, vt0.z}, {vt1.x, vt1.y, vt1.z}, {vt2.x, vt2.y, vt2.z}};
 	heeksCAD->STLSolidAddTriangle(object_to_add_triangles_to, t[0]);
 }
 
@@ -689,7 +689,6 @@ void CMesh::SetClickMarkPoint(MarkedObject* marked_object, const double* ray_sta
 }
 
 void CMesh::NormalizeAllVertices(){
-	bool success = true;
 	std::map<CMeshPosition, CMeshVertex*>::iterator It;
 	for(It = m_vertices.begin(); It != m_vertices.end(); It++){
 		CMeshVertex* v = It->second;

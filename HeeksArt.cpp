@@ -106,7 +106,6 @@ void CHeeksArtApp::OnStartUp(CHeeksCADInterface* h, const wxString& dll_path)
 
 	// add menus and toolbars
 	wxFrame* frame = heeksCAD->GetMainFrame();
-	wxAuiManager* aui_manager = heeksCAD->GetAuiManager();
 
 	// tool bars
 	heeksCAD->RegisterAddToolBars(AddToolBars);

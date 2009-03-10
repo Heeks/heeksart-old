@@ -33,3 +33,4 @@ public:
 	double magn()const{return sqrt(x*x + y*y + z*z);}
 	const Point norm()const{double m = magn(); if(m < 0.0000000000001)return Point(0, 0, 0); return Point(*this)/m;}
 };
+
