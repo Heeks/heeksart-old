@@ -451,6 +451,21 @@ public:
 
 static fnRecalcCentres recalc_centres;
 
+class MirrorMesh:public Tool{
+public:
+	// Tool's virtual functions
+	const wxChar* GetTitle(){return _("Mirror all x<1");}
+	void Run(){
+		double tolerance = 0.4;
+		//if(heeksCAD->InputDouble(_("Enter Tolerance"), _("Tolerance"), tolerance))
+		//{
+			mesh_for_tools->Mirror(tolerance);
+		//}
+	}
+};
+
+static MirrorMesh mirror_mesh;
+
 void CMesh::GetTools(std::list<Tool*>* t_list, const wxPoint* p)
 {
 	mesh_for_tools = this;
@@ -458,6 +473,7 @@ void CMesh::GetTools(std::list<Tool*>* t_list, const wxPoint* p)
 	t_list->push_back(&normalize_all_vertices);
 	t_list->push_back(&set_all_vnormals);
 	t_list->push_back(&recalc_centres);
+	t_list->push_back(&mirror_mesh);
 
 	HeeksObj::GetTools(t_list, p);
 }
@@ -502,9 +518,11 @@ bool CMesh::RemoveGivenEdge(CMeshEdge* edge){
 			FindIt = FindIt2->second.find(edge->m_v[0]);
 			if(FindIt != FindIt2->second.end() && FindIt->second == edge){
 				// edge found  v1 - v2
-				FindIt2->second.erase(FindIt);
+				std::map<const CMeshVertex*, CMeshEdge*>& map = FindIt2->second;
+				map.erase(FindIt);
 				edge_removed = true;
-				if(FindIt2->second.size() == 0)m_edge_map.erase(FindIt1);
+				if(map.size() == 0)
+					m_edge_map.erase(FindIt2);
 			}
 		}
 	}
@@ -551,7 +569,6 @@ void CMesh::Remove(HeeksObj* object){
 					}
 				}
 			}
-			DestroyChildDisplayLists();
 			break;
 
 		case MeshEdgeType:
@@ -560,7 +577,6 @@ void CMesh::Remove(HeeksObj* object){
 				edge->m_owner = NULL;
 				RemoveGivenEdge(edge);
 			}
-			DestroyChildDisplayLists();
 			break;
 	}
 
@@ -872,4 +888,75 @@ HeeksObj* CMesh::ReadFromXMLElement(TiXmlElement* element)
 	}
 
 	return new_object;
+}
+
+void CMesh::Mirror(double tolerance)
+{
+	std::set<CMeshFace*> faces_to_delete;
+	std::list<CMeshVertex*> vertices_to_move;
+
+	// loop through all the vertices
+	for(std::map<CMeshPosition, CMeshVertex*>::iterator It = m_vertices.begin(); It != m_vertices.end(); It++)
+	{
+		CMeshVertex* v = It->second;
+		Point p = v->vertex();
+		if(fabs(p.x) < tolerance)
+		{
+			vertices_to_move.push_back(v);
+		}
+		else if(p.x < 0)
+		{
+			// delete all these faces
+			for(std::set<CMeshFace*>::iterator ItF = v->m_faces.begin(); ItF != v->m_faces.end(); ItF++)
+			{
+				CMeshFace* face = *ItF;
+				faces_to_delete.insert(face);
+			}
+		}
+	}
+
+	// move the vertices
+	for(std::list<CMeshVertex*>::iterator It = vertices_to_move.begin(); It != vertices_to_move.end(); It++)
+	{
+		CMeshVertex* v = *It;
+		Point p = v->vertex();
+		p.x = 0.0;
+		ChangeVertex(v, p);
+	}
+
+	// delete the faces
+	for(std::set<CMeshFace*>::iterator It = faces_to_delete.begin(); It != faces_to_delete.end(); It++)
+	{
+		CMeshFace* face = *It;
+		Remove(face);
+		delete face;
+	}
+
+	// copy and mirror all the existing faces
+	std::set<CMeshFace*> face_set = m_faces;
+	for(std::set<CMeshFace*>::iterator It = face_set.begin(); It != face_set.end(); It++)
+	{
+		CMeshFace* face = *It;
+		Point a = face->m_v[0]->vertex();
+		Point b = face->m_v[1]->vertex();
+		Point c = face->m_v[2]->vertex();
+		Point ab = FindEdge(face->m_v[0], face->m_v[1])->GetControlPointNearVertex(face->m_v[0]).vertex();
+		Point ba = FindEdge(face->m_v[1], face->m_v[0])->GetControlPointNearVertex(face->m_v[1]).vertex();
+		Point bc = FindEdge(face->m_v[1], face->m_v[2])->GetControlPointNearVertex(face->m_v[1]).vertex();
+		Point cb = FindEdge(face->m_v[2], face->m_v[1])->GetControlPointNearVertex(face->m_v[2]).vertex();
+		Point ca = FindEdge(face->m_v[2], face->m_v[0])->GetControlPointNearVertex(face->m_v[2]).vertex();
+		Point ac = FindEdge(face->m_v[0], face->m_v[2])->GetControlPointNearVertex(face->m_v[0]).vertex();
+		Point centre = face->m_centre.vertex();
+		a.x = -a.x;
+		b.x = -b.x;
+		c.x = -c.x;
+		ab.x = -ab.x;
+		ba.x = -ba.x;
+		bc.x = -bc.x;
+		cb.x = -cb.x;
+		ca.x = -ca.x;
+		ac.x = -ac.x;
+		centre.x = -centre.x;
+		AddTriangle(a, c, b, ac, ca, cb, bc, ba, ab, centre);
+	}
 }

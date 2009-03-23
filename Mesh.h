@@ -74,6 +74,7 @@ public:
 	void NormalizeAllVertices();
 	bool SetAllVertexNormals();
 	void RecalculateFaceCentres();
+	void Mirror(double tolerance);
 };
 
 #endif

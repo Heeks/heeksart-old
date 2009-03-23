@@ -15,7 +15,7 @@ class CMeshChild : public HeeksObj
 public:
 	int m_gl_list;
 	CMeshChild():m_gl_list(0){}
-	virtual ~CMeshChild(){}
+	virtual ~CMeshChild();
 
 	void KillGLLists(void);
 };

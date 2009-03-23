@@ -13,3 +13,8 @@ void CMeshChild::KillGLLists(void)
 		m_gl_list = 0;
 	}
 }
+
+CMeshChild::~CMeshChild()
+{
+	KillGLLists();
+}

@@ -127,8 +127,8 @@ void CMeshEdge::MakeSureDisplayListExists(){
 }
 
 void CMeshEdge::InvalidateBothFacesDisplayLists(){
-	m_f[0]->KillGLLists();
-	m_f[1]->KillGLLists();
+	if(m_f[0])m_f[0]->KillGLLists();
+	if(m_f[1])m_f[1]->KillGLLists();
 }
 
 void CMeshEdge::GetGripperPositions(std::list<double> *list, bool just_for_endof){
