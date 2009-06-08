@@ -113,12 +113,12 @@ void CHeeksArtApp::OnStartUp(CHeeksCADInterface* h, const wxString& dll_path)
 
 	// Mesh menu
 	wxMenu *menuMesh = new wxMenu;
-	heeksCAD->AddMenuItem(menuMesh, _("Add a simple mesh"), OnSimpleMesh);
+	heeksCAD->AddMenuItem(menuMesh, _("Add a simple mesh"), ToolImage(_T("mesh")), OnSimpleMesh);
 	frame->GetMenuBar()->Append(menuMesh,  _("Mesh"));
 
 	// add tick boxes for them all on the Window menu
 	wxMenu* window_menu = heeksCAD->GetWindowMenu();
-	heeksCAD->AddMenuCheckItem(window_menu, _T("Mesh"), OnMeshBar, OnUpdateMeshBar);
+	heeksCAD->AddMenuItem(window_menu, _T("Mesh"), wxBitmap(), OnMeshBar, OnUpdateMeshBar, NULL, true);
 	heeksCAD->RegisterHideableWindow(m_meshBar);
 
 	// add object reading functions
