@@ -8,6 +8,7 @@
 #include "MeshEdge.h"
 #include "interface/Tool.h"
 #include "interface/GripperTypes.h"
+#include "interface/GripData.h"
 
 CMeshVertex::CMeshVertex(const Point& v){
 	m_position = CMeshPosition(v);
@@ -150,27 +151,21 @@ void CMeshVertex::NormalizeAllEdgeDirections(){
 	}
 }
 
-void CMeshVertex::GetGripperPositions(std::list<double> *list, bool just_for_endof){
+void CMeshVertex::GetGripperPositions(std::list<GripData> *list, bool just_for_endof){
 	// vertex
 	Point vt = vertex();
-	list->push_back(GripperTypeStretch2);
-	list->push_back(vt.x);
-	list->push_back(vt.y);
-	list->push_back(vt.z);
+	list->push_back(GripData(GripperTypeStretch2,vt.x,vt.y,vt.z,NULL));
 
 	for(std::set<CMeshEdge*>::iterator It = m_edges.begin(); It != m_edges.end(); It++)
 	{
 		CMeshEdge* edge = *It;
 		CMeshPosition& p = edge->GetControlPointNearVertex(this);
 		vt = p.vertex();
-		list->push_back(GripperTypeStretch);
-		list->push_back(vt.x);
-		list->push_back(vt.y);
-		list->push_back(vt.z);
+		list->push_back(GripData(GripperTypeStretch,vt.x,vt.y,vt.z,NULL));
 	}
 }
 
-bool CMeshVertex::Stretch(const double *p, const double* shift){
+bool CMeshVertex::Stretch(const double *p, const double* shift, void* data){
 	// stretch the vertex at "p" by a vector "shift"
 	Point vp(p);
 	
@@ -178,7 +173,7 @@ bool CMeshVertex::Stretch(const double *p, const double* shift){
 	if(vp == vt){
 		Point vshift(shift);
 		Point new_vertex = vp + vshift;
-		CMesh* mesh = (CMesh*)(m_owner);
+		CMesh* mesh = (CMesh*)Owner();
 		if(mesh)mesh->ChangeVertex(this, new_vertex); 
 
 		// stretch all the edges nearest control points

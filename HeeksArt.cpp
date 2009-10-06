@@ -72,7 +72,8 @@ static void OnSimpleMesh(wxCommandEvent& event)
 	mesh->AddTriangle(Point(0, 0, 10), Point(-10, 0, 0), Point(0, -10, 0), Point(-MESH_CONTROL_VAL, 0, 10), Point(-10, 0, MESH_CONTROL_VAL), Point(-10, -MESH_CONTROL_VAL, 0), Point(-MESH_CONTROL_VAL, -10, 0), Point(0, -10, MESH_CONTROL_VAL), Point(0, -MESH_CONTROL_VAL, 10), Point(-MESH_CENTRE_VAL, -MESH_CENTRE_VAL, MESH_CENTRE_VAL));
 	mesh->AddTriangle(Point(0, 0, 10), Point(0, -10, 0), Point(10, 0, 0), Point(0, -MESH_CONTROL_VAL, 10), Point(0, -10, MESH_CONTROL_VAL), Point(MESH_CONTROL_VAL, 0, 0), Point(10, -MESH_CONTROL_VAL, 0), Point(10, 0, MESH_CONTROL_VAL), Point(MESH_CONTROL_VAL, 0, 10), Point(MESH_CENTRE_VAL, -MESH_CENTRE_VAL, MESH_CENTRE_VAL));
 	mesh->SetAllVertexNormals();
-	heeksCAD->AddUndoably(mesh, NULL);
+	heeksCAD->Add(mesh, NULL);
+	heeksCAD->Changed();
 }
 
 static void AddToolBars()

@@ -49,11 +49,12 @@ public:
 	void glCommands(bool select, bool marked, bool no_color);
 	void GetBox(CBox &box);
 	const wxChar* GetTypeString(void)const{return _("Mesh");}
+	long GetMarkingMask()const{return MARKING_FILTER_UNKNOWN;} // can be selected
 	HeeksObj *MakeACopy(void)const;
 	wxString GetIcon(){return theApp.GetDllFolder() + _T("/icons/mesh");}
 	bool ModifyByMatrix(const double *mat);
 	void GetTools(std::list<Tool*>* t_list, const wxPoint* p);
-	bool Stretch(const double *p, const double* shift);
+	bool Stretch(const double *p, const double* shift, void* data);
 	void Remove(HeeksObj* object);
 	void KillGLLists(void);
 	void WriteXML(TiXmlNode *root);

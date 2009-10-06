@@ -33,9 +33,9 @@ public:
 	const wxChar* GetTypeString(void)const{return _("Mesh Face");}
 	HeeksObj *MakeACopy(void)const;
 	wxString GetIcon(){return _T("meshedge");}
-	void GetGripperPositions(std::list<double> *list, bool just_for_endof);
+	void GetGripperPositions(std::list<GripData> *list, bool just_for_endof);
 	void GetTools(std::list<Tool*>* t_list, const wxPoint* p);
-	bool Stretch(const double *p, const double* shift);
+	bool Stretch(const double *p, const double* shift, void* data);
 	void DrawGripperSelectItems();
 
 	// member functions

@@ -9,6 +9,7 @@
 #include "Mesh.h"
 #include "interface/Tool.h"
 #include "interface/GripperTypes.h"
+#include "interface/GripData.h"
 
 CMeshEdge::CMeshEdge(CMeshVertex* v0, CMeshVertex* v1, const CMeshPosition& c0, const CMeshPosition& c1, CMesh* owner)
 {
@@ -20,7 +21,7 @@ CMeshEdge::CMeshEdge(CMeshVertex* v0, CMeshVertex* v1, const CMeshPosition& c0, 
 	m_c[1] = c1;
 	m_f[0] = NULL;
 	m_f[1] = NULL;
-	m_owner = owner;
+	SetOwner(owner);
 }
 
 CMeshEdge::~CMeshEdge()
@@ -103,7 +104,7 @@ void CMeshEdge::GetSmoothLines(void(*call_back)(const Point& vt0, const Point& v
 void CMeshEdge::MakeSureDisplayListExists(){
 	if(m_gl_list)return;
 
-	CMesh* mesh = (CMesh*)(m_owner);
+	CMesh* mesh = (CMesh*)(Owner());
 	if(mesh == NULL)return;
 
 	m_gl_list = glGenLists(1);
@@ -131,15 +132,13 @@ void CMeshEdge::InvalidateBothFacesDisplayLists(){
 	if(m_f[1])m_f[1]->KillGLLists();
 }
 
-void CMeshEdge::GetGripperPositions(std::list<double> *list, bool just_for_endof){
+void CMeshEdge::GetGripperPositions(std::list<GripData> *list, bool just_for_endof)
+{
 	// add the vertices for each end of the edge
 	{
 		for(int i = 0; i<2; i++){
 			Point vt =  m_v[i]->vertex();
-			list->push_back(GripperTypeStretch2);
-			list->push_back(vt.x);
-			list->push_back(vt.y);
-			list->push_back(vt.z);
+			list->push_back(GripData(GripperTypeStretch2,vt.x,vt.y,vt.z,NULL));
 		}
 	}
 
@@ -147,24 +146,18 @@ void CMeshEdge::GetGripperPositions(std::list<double> *list, bool just_for_endof
 	{
 		for(int i = 0; i<2; i++){
 			Point vt = m_c[i].vertex();
-			list->push_back(GripperTypeStretch);
-			list->push_back(vt.x);
-			list->push_back(vt.y);
-			list->push_back(vt.z);
+			list->push_back(GripData(GripperTypeStretch,vt.x,vt.y,vt.z,NULL));
 		}
 	}
 
 	// add a mid point cross for splitting
 	{
 		Point vt = GetMidPoint();
-		list->push_back(GripperTypeStretch3);
-		list->push_back(vt.x);
-		list->push_back(vt.y);
-		list->push_back(vt.z);
+		list->push_back(GripData(GripperTypeStretch3,vt.x,vt.y,vt.z,NULL));
 	}
 }
 
-bool CMeshEdge::Stretch(const double *p, const double* shift){
+bool CMeshEdge::Stretch(const double *p, const double* shift, void* data){
 	// stretch the vertex at "p" by a vector "shift"
 	Point vp(p);
 
@@ -173,7 +166,7 @@ bool CMeshEdge::Stretch(const double *p, const double* shift){
 		Point vt = m_v[i]->vertex();
 		if(vp == vt){
 			Point new_vertex = vp + Point(shift);
-			CMesh* mesh = (CMesh*)m_owner;
+			CMesh* mesh = (CMesh*)Owner();
 			mesh->ChangeVertex(m_v[i], new_vertex); 
 			return false;
 		}
@@ -207,12 +200,12 @@ bool CMeshEdge::Stretch(const double *p, const double* shift){
 	return false;
 }
 
-bool CMeshEdge::StretchTemporary(const double *p, const double* shift)
+bool CMeshEdge::StretchTemporary(const double *p, const double* shift, void* data)
 {
 	Point vt = GetMidPoint();
 	Point vp(p);
 	if(vp == vt)return false;
-	Stretch(p, shift);
+	Stretch(p, shift, data);
 	return true;
 }
 

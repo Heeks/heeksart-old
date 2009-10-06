@@ -9,6 +9,7 @@
 #include "Plane.h"
 #include "Line.h"
 #include "interface/GripperTypes.h"
+#include "interface/GripData.h"
 
 CMeshFace::CMeshFace()
 {
@@ -219,14 +220,11 @@ void CMeshFace::MakeSureDisplayListExists(){
 	glEndList();
 }
 
-void CMeshFace::GetGripperPositions(std::list<double> *list, bool just_for_endof){
+void CMeshFace::GetGripperPositions(std::list<GripData> *list, bool just_for_endof){
 	{
 		for(int i = 0; i<3; i++){
 			Point vt = m_v[i]->vertex();
-			list->push_back(GripperTypeStretch2);
-			list->push_back(vt.x);
-			list->push_back(vt.y);
-			list->push_back(vt.z);
+			list->push_back(GripData(GripperTypeStretch2,vt.x,vt.y,vt.z,NULL));
 		}
 	}
 
@@ -234,20 +232,14 @@ void CMeshFace::GetGripperPositions(std::list<double> *list, bool just_for_endof
 		for(int i = 0; i<3; i++){
 			for(int j = 0; j<2; j++){
 				Point vt = m_e[i]->m_c[j].vertex();
-				list->push_back(GripperTypeStretch);
-				list->push_back(vt.x);
-				list->push_back(vt.y);
-				list->push_back(vt.z);
+				list->push_back(GripData(GripperTypeStretch,vt.x,vt.y,vt.z,NULL));
 			}
 		}
 	}
 
 	{
 		Point vt = m_centre.vertex();
-		list->push_back(GripperTypeStretch4);
-		list->push_back(vt.x);
-		list->push_back(vt.y);
-		list->push_back(vt.z);
+		list->push_back(GripData(GripperTypeStretch4,vt.x,vt.y,vt.z,NULL));
 	}
 }
 
@@ -302,7 +294,7 @@ Point CMeshFace::direction_at_vertex(const CMeshVertex* v)const{
 	return (vc[0] + vc[1]).norm();
 }
 
-bool CMeshFace::Stretch(const double *p, const double* shift){
+bool CMeshFace::Stretch(const double *p, const double* shift, void* data){
 	// stretch the vertex at "p" by a vector "shift"
 	Point vp(p);
 
@@ -312,7 +304,7 @@ bool CMeshFace::Stretch(const double *p, const double* shift){
 			Point vt = m_v[i]->vertex();
 			if(vp == vt){
 				Point new_vertex = vp + Point(shift);
-				CMesh* mesh = (CMesh*)m_owner;
+				CMesh* mesh = (CMesh*)Owner();
 				mesh->ChangeVertex(m_v[i], new_vertex); 
 				return false;
 			}
@@ -398,7 +390,7 @@ CMeshVertex* CMeshFace::SplitOnGivenEdge(CMeshEdge* edge)
 	}
 
 	// remove the existing face
-	CMesh* mesh = (CMesh*)m_owner;
+	CMesh* mesh = (CMesh*)Owner();
 	mesh->Remove(this);
 	delete this;
 

@@ -65,7 +65,7 @@ void CMesh::DeleteFaces(){
 	std::set<CMeshFace*>::iterator It;
 	for(It = m_faces.begin(); It != m_faces.end(); It++){
 		CMeshFace* face = *It;
-		face->m_owner = NULL;
+		face->SetOwner(NULL);
 		delete face;
 	}
 
@@ -405,10 +405,10 @@ public:
 	const wxChar* GetTitle(){return _("Convert Mesh To Triangles");}
 	void Run(){
 		HeeksObj* new_object = mesh_for_tools->ConvertToTriangles();
-		heeksCAD->StartHistory();
-		heeksCAD->AddUndoably(new_object, NULL);
-		heeksCAD->DeleteUndoably(mesh_for_tools);
-		heeksCAD->EndHistory();
+		heeksCAD->CreateUndoPoint();
+		heeksCAD->Add(new_object, NULL);
+		heeksCAD->Remove(mesh_for_tools);
+		heeksCAD->Changed();
 	}
 	wxString BitmapPath(){ return _T("meshtotri");}
 };
@@ -478,7 +478,8 @@ void CMesh::GetTools(std::list<Tool*>* t_list, const wxPoint* p)
 	HeeksObj::GetTools(t_list, p);
 }
 
-bool CMesh::Stretch(const double *p, const double* shift){
+bool CMesh::Stretch(const double *p, const double* shift, void* data)
+{
 	return false;
 }
 
@@ -537,7 +538,7 @@ void CMesh::Remove(HeeksObj* object){
 				std::list<CMeshEdge*> edge_delete_list;
 
 				CMeshFace* face = (CMeshFace*)object;
-				face->m_owner = NULL;
+				face->SetOwner(NULL);
 				{
 					for(int i = 0; i<3; i++){
 						for(int j = 0; j<2; j++){
@@ -574,13 +575,13 @@ void CMesh::Remove(HeeksObj* object){
 		case MeshEdgeType:
 			{
 				CMeshEdge* edge = (CMeshEdge*)object;
-				edge->m_owner = NULL;
+				edge->SetOwner(NULL);
 				RemoveGivenEdge(edge);
 			}
 			break;
 	}
 
-	object->m_owner = NULL;
+	object->SetOwner(NULL);
 }
 
 void CMesh::ChangeVertex(CMeshVertex* v, const Point& vt){

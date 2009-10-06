@@ -180,6 +180,83 @@
 				CommandLine=""
 			/>
 		</Configuration>
+		<Configuration
+			Name="Unicode Debug|Win32"
+			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
+			IntermediateDirectory="$(ConfigurationName)"
+			ConfigurationType="2"
+			CharacterSet="1"
+			>
+			<Tool
+				Name="VCPreBuildEventTool"
+			/>
+			<Tool
+				Name="VCCustomBuildTool"
+			/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"
+			/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"
+			/>
+			<Tool
+				Name="VCMIDLTool"
+			/>
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="0"
+				AdditionalIncludeDirectories="&quot;$(WXWIN)\include&quot;;&quot;$(WXWIN)\include\msvc&quot;;&quot;$(HEEKSCADPATH)&quot;;&quot;$(WXWIN)\lib\vc_dll\mswud&quot;"
+				PreprocessorDefinitions="WIN32;_DEBUG;__WXMSW__;__WXDEBUG__;_WINDOWS;NOPCH;WNT;_CRT_SECURE_NO_WARNINGS;WXUSINGDLL;HEEKSART"
+				MinimalRebuild="true"
+				BasicRuntimeChecks="3"
+				RuntimeLibrary="3"
+				UsePrecompiledHeader="2"
+				WarningLevel="3"
+				DebugInformationFormat="4"
+			/>
+			<Tool
+				Name="VCManagedResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCResourceCompilerTool"
+			/>
+			<Tool
+				Name="VCPreLinkEventTool"
+			/>
+			<Tool
+				Name="VCLinkerTool"
+				AdditionalDependencies="opengl32.lib glu32.lib comctl32.lib rpcrt4.lib wxmsw28ud_core.lib wxmsw28ud_aui.lib wxmsw28ud_gl.lib wxbase28ud.lib"
+				OutputFile=".\HeeksArt.dll"
+				LinkIncremental="2"
+				AdditionalLibraryDirectories="&quot;$(WXWIN)\lib\vc_dll&quot;"
+				GenerateDebugInformation="true"
+				SubSystem="2"
+				TargetMachine="1"
+			/>
+			<Tool
+				Name="VCALinkTool"
+			/>
+			<Tool
+				Name="VCManifestTool"
+			/>
+			<Tool
+				Name="VCXDCMakeTool"
+			/>
+			<Tool
+				Name="VCBscMakeTool"
+			/>
+			<Tool
+				Name="VCFxCopTool"
+			/>
+			<Tool
+				Name="VCAppVerifierTool"
+			/>
+			<Tool
+				Name="VCPostBuildEventTool"
+				Description="(commented) add a registry key"
+				CommandLine="REM REG ADD HKCU\Software\HeeksCAD\plugins /v HeeksArt /t REG_SZ /d &quot;HeeksArt.dll&quot;"
+			/>
+		</Configuration>
 	</Configurations>
 	<References>
 	</References>
@@ -403,6 +480,14 @@
 					UsePrecompiledHeader="1"
 				/>
 			</FileConfiguration>
+			<FileConfiguration
+				Name="Unicode Debug|Win32"
+				>
+				<Tool
+					Name="VCCLCompilerTool"
+					UsePrecompiledHeader="1"
+				/>
+			</FileConfiguration>
 		</File>
 		<File
 			RelativePath=".\stdafx.h"
@@ -421,6 +506,14 @@
 			</FileConfiguration>
 			<FileConfiguration
 				Name="Release|Win32"
+				>
+				<Tool
+					Name="VCCLCompilerTool"
+					UsePrecompiledHeader="0"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Unicode Debug|Win32"
 				>
 				<Tool
 					Name="VCCLCompilerTool"
@@ -451,6 +544,14 @@
 					UsePrecompiledHeader="0"
 				/>
 			</FileConfiguration>
+			<FileConfiguration
+				Name="Unicode Debug|Win32"
+				>
+				<Tool
+					Name="VCCLCompilerTool"
+					UsePrecompiledHeader="0"
+				/>
+			</FileConfiguration>
 		</File>
 		<File
 			RelativePath="$(HEEKSCADPATH)\tinyxml\tinyxml.h"
@@ -469,6 +570,14 @@
 			</FileConfiguration>
 			<FileConfiguration
 				Name="Release|Win32"
+				>
+				<Tool
+					Name="VCCLCompilerTool"
+					UsePrecompiledHeader="0"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Unicode Debug|Win32"
 				>
 				<Tool
 					Name="VCCLCompilerTool"
@@ -495,6 +604,14 @@
 					UsePrecompiledHeader="0"
 				/>
 			</FileConfiguration>
+			<FileConfiguration
+				Name="Unicode Debug|Win32"
+				>
+				<Tool
+					Name="VCCLCompilerTool"
+					UsePrecompiledHeader="0"
+				/>
+			</FileConfiguration>
 		</File>
 		<File
 			RelativePath="$(HEEKSCADPATH)\interface\Tool.h"
@@ -506,6 +623,14 @@
 		</File>
 		<File
 			RelativePath="$(HEEKSCADPATH)\interface\ToolImage.h"
+			>
+		</File>
+		<File
+			RelativePath="..\HeeksCAD\interface\TransientObject.cpp"
+			>
+		</File>
+		<File
+			RelativePath="..\HeeksCAD\interface\TransientObject.h"
 			>
 		</File>
 	</Files>

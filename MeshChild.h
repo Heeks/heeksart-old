@@ -17,7 +17,9 @@ public:
 	CMeshChild():m_gl_list(0){}
 	virtual ~CMeshChild();
 
+	// HeeksObj's virtual functions
 	void KillGLLists(void);
+	long GetMarkingMask()const{return MARKING_FILTER_UNKNOWN;} // can be selected
 };
 
 #endif

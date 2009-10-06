@@ -27,6 +27,7 @@ extern "C" {
 
 #include "Point.h"
 #include "HeeksArt.h"
+#include "interface/HeeksObj.h"
 
 // TODO: reference additional headers your program requires here
 

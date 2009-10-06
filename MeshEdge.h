@@ -33,9 +33,9 @@ public:
 	HeeksObj *MakeACopy(void)const;
 	wxString GetIcon(){return _T("meshedge");}
 	void GetTools(std::list<Tool*>* t_list, const wxPoint* p);
-	void GetGripperPositions(std::list<double> *list, bool just_for_endof);
-	bool Stretch(const double *p, const double* shift);
-	bool StretchTemporary(const double *p, const double* shift);
+	void GetGripperPositions(std::list<GripData> *list, bool just_for_endof);
+	bool Stretch(const double *p, const double* shift, void* data);
+	bool StretchTemporary(const double *p, const double* shift, void* data);
 
 	// member functions
 	void MakeSureDisplayListExists();
