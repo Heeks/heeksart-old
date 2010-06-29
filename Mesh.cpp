@@ -41,6 +41,13 @@ const CMesh& CMesh::operator=(const CMesh &m){
 	return *this;
 }
 
+const wxBitmap &CMesh::GetIcon()
+{
+	static wxBitmap* icon = NULL;
+	if(icon == NULL)icon = new wxBitmap(wxImage(theApp.GetResFolder() + _T("/icons/mesh.png")));
+	return *icon;
+}
+
 void CMesh::DeleteVertices(){
 	std::map<CMeshPosition, CMeshVertex*>::iterator It;
 	for(It = m_vertices.begin(); It != m_vertices.end(); It++){
@@ -202,7 +209,7 @@ HeeksObj *CMesh::MakeACopy(void)const
 	return new CMesh(*this);
 }
 
-bool CMesh::ModifyByMatrix(const double *mat){
+void CMesh::ModifyByMatrix(const double *mat){
 	std::list<CMeshVertex*> vertex_list;
 
 	Matrix tmat(mat);
@@ -243,8 +250,6 @@ bool CMesh::ModifyByMatrix(const double *mat){
 	}
 
 	DestroyChildDisplayLists();
-
-	return false;
 }
 
 CMeshFace* CMesh::AddTriangle(const Point& a, const Point& b, const Point& c, const Point& ab, const Point& ba, const Point& bc, const Point& cb, const Point& ca, const Point& ac, const Point& centre){
@@ -404,8 +409,8 @@ public:
 	// Tool's virtual functions
 	const wxChar* GetTitle(){return _("Convert Mesh To Triangles");}
 	void Run(){
-		HeeksObj* new_object = mesh_for_tools->ConvertToTriangles();
 		heeksCAD->CreateUndoPoint();
+		HeeksObj* new_object = mesh_for_tools->ConvertToTriangles();
 		heeksCAD->Add(new_object, NULL);
 		heeksCAD->Remove(mesh_for_tools);
 		heeksCAD->Changed();

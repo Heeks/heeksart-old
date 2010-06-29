@@ -20,12 +20,13 @@ public:
 	~CHeeksArtApp();
 
 	void OnStartUp(CHeeksCADInterface* h, const wxString& dll_path);
-	void OnNewOrOpen(bool open);
+	void OnNewOrOpen(bool open, int res);
 	void OnInitDLL();
 	void OnDestroyDLL();
 	void GetOptions(std::list<Property *> *list);
 	void OnFrameDelete();
-	const wxString& GetDllFolder();
+	wxString GetDllFolder();
+	wxString GetResFolder();
 };
 
 extern CHeeksArtApp theApp;

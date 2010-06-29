@@ -37,7 +37,7 @@ public:
 	int GetType()const{return MeshVertexType;}
 	const wxChar* GetTypeString(void)const{return _("Mesh Vertex");}
 	HeeksObj *MakeACopy(void)const;
-	wxString GetIcon(){return _T("meshedge");}
+	const wxBitmap &GetIcon();
 	void GetTools(std::list<Tool*>* t_list, const wxPoint* p);
 	void GetGripperPositions(std::list<GripData> *list, bool just_for_endof);
 	bool Stretch(const double *p, const double* shift, void* data);

@@ -28,6 +28,13 @@ CMeshEdge::~CMeshEdge()
 {
 }
 
+const wxBitmap &CMeshEdge::GetIcon()
+{
+	static wxBitmap* icon = NULL;
+	if(icon == NULL)icon = new wxBitmap(wxImage(theApp.GetResFolder() + _T("/icons/meshedge.png")));
+	return *icon;
+}
+
 class SplitEdge:public Tool{
 public:
 	CMeshEdge* m_e;
@@ -138,7 +145,7 @@ void CMeshEdge::GetGripperPositions(std::list<GripData> *list, bool just_for_end
 	{
 		for(int i = 0; i<2; i++){
 			Point vt =  m_v[i]->vertex();
-			list->push_back(GripData(GripperTypeStretch2,vt.x,vt.y,vt.z,NULL));
+			list->push_back(GripData(GripperTypeStretch,vt.x,vt.y,vt.z,NULL, false, 1));
 		}
 	}
 
@@ -146,14 +153,14 @@ void CMeshEdge::GetGripperPositions(std::list<GripData> *list, bool just_for_end
 	{
 		for(int i = 0; i<2; i++){
 			Point vt = m_c[i].vertex();
-			list->push_back(GripData(GripperTypeStretch,vt.x,vt.y,vt.z,NULL));
+			list->push_back(GripData(GripperTypeStretch,vt.x,vt.y,vt.z,NULL, true));
 		}
 	}
 
 	// add a mid point cross for splitting
 	{
 		Point vt = GetMidPoint();
-		list->push_back(GripData(GripperTypeStretch3,vt.x,vt.y,vt.z,NULL));
+		list->push_back(GripData(GripperTypeStretch,vt.x,vt.y,vt.z,NULL, true, 2));
 	}
 }
 

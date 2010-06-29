@@ -19,6 +19,13 @@ CMeshFace::~CMeshFace()
 {
 }
 
+const wxBitmap &CMeshFace::GetIcon()
+{
+	static wxBitmap* icon = NULL;
+	if(icon == NULL)icon = new wxBitmap(wxImage(theApp.GetResFolder() + _T("/icons/meshface.png")));
+	return *icon;
+}
+
 class RecalcGoodCentre:public Tool{
 public:
 	CMeshFace* m_f;
@@ -224,7 +231,7 @@ void CMeshFace::GetGripperPositions(std::list<GripData> *list, bool just_for_end
 	{
 		for(int i = 0; i<3; i++){
 			Point vt = m_v[i]->vertex();
-			list->push_back(GripData(GripperTypeStretch2,vt.x,vt.y,vt.z,NULL));
+			list->push_back(GripData(GripperTypeStretch,vt.x,vt.y,vt.z,NULL, false, 1));
 		}
 	}
 
@@ -232,14 +239,14 @@ void CMeshFace::GetGripperPositions(std::list<GripData> *list, bool just_for_end
 		for(int i = 0; i<3; i++){
 			for(int j = 0; j<2; j++){
 				Point vt = m_e[i]->m_c[j].vertex();
-				list->push_back(GripData(GripperTypeStretch,vt.x,vt.y,vt.z,NULL));
+				list->push_back(GripData(GripperTypeStretch,vt.x,vt.y,vt.z,NULL, true));
 			}
 		}
 	}
 
 	{
 		Point vt = m_centre.vertex();
-		list->push_back(GripData(GripperTypeStretch4,vt.x,vt.y,vt.z,NULL));
+		list->push_back(GripData(GripperTypeStretch,vt.x,vt.y,vt.z,NULL, true, 3));
 	}
 }
 

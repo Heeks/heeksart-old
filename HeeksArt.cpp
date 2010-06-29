@@ -126,7 +126,7 @@ void CHeeksArtApp::OnStartUp(CHeeksCADInterface* h, const wxString& dll_path)
 	heeksCAD->RegisterReadXMLfunction("mesh", CMesh::ReadFromXMLElement);
 }
 
-void CHeeksArtApp::OnNewOrOpen(bool open)
+void CHeeksArtApp::OnNewOrOpen(bool open, int res)
 {
 }
 
@@ -147,9 +147,18 @@ void CHeeksArtApp::OnFrameDelete()
 {
 }
 
-const wxString& CHeeksArtApp::GetDllFolder()
+wxString CHeeksArtApp::GetDllFolder()
 {
 	return m_dll_path;
+}
+
+wxString CHeeksArtApp::GetResFolder()
+{
+#if defined(WIN32) || defined(RUNINPLACE) //compile with 'RUNINPLACE=yes make' then skip 'sudo make install'
+	return m_dll_path;
+#else
+	return (m_dll_path + _T("/../../share/heekscnc"));
+#endif
 }
 
 class MyApp : public wxApp

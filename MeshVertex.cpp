@@ -33,6 +33,13 @@ HeeksObj *CMeshVertex::MakeACopy(void)const
 	return new CMeshVertex(*this);
 }
 
+const wxBitmap &CMeshVertex::GetIcon()
+{
+	static wxBitmap* icon = NULL;
+	if(icon == NULL)icon = new wxBitmap(wxImage(theApp.GetResFolder() + _T("/icons/meshvertex.png")));
+	return *icon;
+}
+
 class NormalizeAllEdgeDirections:public Tool{
 public:
 	CMeshVertex* m_vertex;
@@ -154,14 +161,14 @@ void CMeshVertex::NormalizeAllEdgeDirections(){
 void CMeshVertex::GetGripperPositions(std::list<GripData> *list, bool just_for_endof){
 	// vertex
 	Point vt = vertex();
-	list->push_back(GripData(GripperTypeStretch2,vt.x,vt.y,vt.z,NULL));
+	list->push_back(GripData(GripperTypeStretch,vt.x,vt.y,vt.z,NULL, false, 1));
 
 	for(std::set<CMeshEdge*>::iterator It = m_edges.begin(); It != m_edges.end(); It++)
 	{
 		CMeshEdge* edge = *It;
 		CMeshPosition& p = edge->GetControlPointNearVertex(this);
 		vt = p.vertex();
-		list->push_back(GripData(GripperTypeStretch,vt.x,vt.y,vt.z,NULL));
+		list->push_back(GripData(GripperTypeStretch,vt.x,vt.y,vt.z,NULL, true, 0));
 	}
 }
 

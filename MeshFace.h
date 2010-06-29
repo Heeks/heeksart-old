@@ -32,7 +32,7 @@ public:
 	int GetType()const{return MeshFaceType;}
 	const wxChar* GetTypeString(void)const{return _("Mesh Face");}
 	HeeksObj *MakeACopy(void)const;
-	wxString GetIcon(){return _T("meshedge");}
+	const wxBitmap &GetIcon();
 	void GetGripperPositions(std::list<GripData> *list, bool just_for_endof);
 	void GetTools(std::list<Tool*>* t_list, const wxPoint* p);
 	bool Stretch(const double *p, const double* shift, void* data);
