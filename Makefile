@@ -4,7 +4,7 @@ CCFLAGS=-Wall -fPIC -g -I "./" -I/usr/lib/wx/include/gtk2-unicode-release-2.8 -I
 #WX_LIB_LETTER=d
 WX_LIB_LETTER=u
 
-OBJECTS=HeeksArt.o HeeksColor.o HeeksObj.o Interface.o Matrix.o Mesh.o MeshChild.o MeshEdge.o MeshFace.o MeshPosition.o MeshVertex.o ObjList.o Plane.o PropertyCheck.o PropertyChoice.o PropertyColor.o PropertyDouble.o PropertyInt.o PropertyList.o PropertyString.o PropertyVertex.o tinyxml.o tinyxmlerror.o tinyxmlparser.o ToolImage.o
+OBJECTS=HeeksArt.o HeeksColor.o HeeksObj.o Interface.o Matrix.o Mesh.o MeshChild.o MeshEdge.o MeshFace.o MeshPosition.o MeshVertex.o ObjList.o Plane.o PropertyCheck.o PropertyChoice.o PropertyColor.o PropertyDouble.o PropertyInt.o PropertyList.o PropertyString.o PropertyVertex.o tinyxml.o tinyxmlerror.o tinyxmlparser.o ToolImage.o TransientObject.o
 
 SHARED_LIBRARY=./libheeksart.so.0.1.0
 
@@ -84,6 +84,9 @@ tinyxmlparser.o: $(HEEKSCADPATH)/tinyxml/tinyxmlparser.cpp
 	gcc -c $? ${CCFLAGS} -o $@
 
 ToolImage.o: $(HEEKSCADPATH)/interface/ToolImage.cpp
+	gcc -c $? ${CCFLAGS} -o $@
+
+TransientObject.o: $(HEEKSCADPATH)/interface/TransientObject.cpp
 	gcc -c $? ${CCFLAGS} -o $@
 
 clean:

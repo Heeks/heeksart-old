@@ -154,11 +154,7 @@ wxString CHeeksArtApp::GetDllFolder()
 
 wxString CHeeksArtApp::GetResFolder()
 {
-#if defined(WIN32) || defined(RUNINPLACE) //compile with 'RUNINPLACE=yes make' then skip 'sudo make install'
 	return m_dll_path;
-#else
-	return (m_dll_path + _T("/../../share/heekscnc"));
-#endif
 }
 
 class MyApp : public wxApp
