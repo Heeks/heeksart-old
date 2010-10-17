@@ -8,6 +8,7 @@
 #include "MeshEdge.h"
 #include "Matrix.h"
 #include "interface/Tool.h"
+#include "interface/Material.h"
 #include "interface/MarkedObject.h"
 #include "tinyxml/tinyxml.h"
 
@@ -113,7 +114,7 @@ void CMesh::DestroyChildDisplayLists(){
 void CMesh::render_elements(bool select, bool selected, bool no_colour){
 	if(m_display_faces){
 		if(!no_colour){
-			HeeksColor(64, 220, 64).glMaterial(1);
+			Material(HeeksColor(64, 220, 64)).glMaterial(1);
 			glEnable(GL_LIGHTING);
 		}
 
